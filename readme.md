@@ -9,14 +9,21 @@
 
 ## Thinks to know
 
-- `payit` only handles payment processing, it does not care about products!
+**On inception of this package there is a bit of confusion surrounding the database column names and roles. This confusion is caused by the fact that there are different providers such as PayPal and Stipe, and each provider may have different payment methods such as express checkout for PayPal, or credit card and afterpay for Stripe.**
+
+- `payit` only handles the payment processing, it does not care about products!
+- Naming convention is important as the service class and provider keys are based on the `platform_name`. Find out more in the naming conventions section.
+
+
+
 - the payment platform name stored in the payment configuration needs to be the same as the name stored in the database
 - Platform alias is created when persists to database converting name to lowercase and replacing spaces with dashes
 - save icon names the sames as the platform alias (lower case and with dashes)
 
 
-- `PaymentPlatforms` are passed in by the `PaymentOptions` component.
--
+
+
+
 
 ## Installation
 
@@ -72,12 +79,16 @@ Add keys to `env` file
     STRIPE_KEY=
     STRIPE_SECRET=
 
-## Usage
+#### Naming Conventions
 
+When adding a new payment platform the `platform_name` is used to to resolve the platform service, and fetch service credentials `services.php`.
 
-Add the `payment-options` component.
+The platform name stored in the database should be stored in 'CamelCase' or 'Title Case'. (PayPal or After Pay)
 
-```php
-<x-payit-payment-options></x-payit-payment-options>
-```
+The platform service class should be named in 'CamelCase'. (PayPalService or AfterPayService)
 
+The platform key in `config/services.php` should be lowercase with no spaces. (`paypal` => [] or `afterpay` => [])
+
+The `alias` is used on to display the payment option on the front-end should be stored as 'Title Case'. (PayPal or After Pay)
+
+The `collapse` component should be created with the same name as the alias in 'lower-case' and hyphenated.

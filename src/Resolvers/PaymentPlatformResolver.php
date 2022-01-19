@@ -16,14 +16,11 @@ class PaymentPlatformResolver
     public function resolveService($paymentPlatformId)
     {
 
-        // no need to convert 'name' to lower, just use alias
-        // convert to lower
-        $name = strtolower($this->paymentPlatforms->firstWhere('id', $paymentPlatformId)->name);
-        // remove spaces
-        $name = str_replace(' ', '', $name);
+        // fetch platform name to be resolved, convert to lower case and strip spaces
+        $provider = strtolower($this->paymentPlatforms->firstWhere('id', $paymentPlatformId)->platform_name);
+        $provider = str_replace(' ', '', $provider );
 
-
-        $service = config("services.{$name}.class");
+        $service = config("services.{$provider}.class");
 
         if ($service) {
             return resolve($service);

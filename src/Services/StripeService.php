@@ -49,40 +49,47 @@ class StripeService
 
         $intent = $this->createIntent($total, $currency, $request->payment_method);
 
-        session()->put('paymentIntentId', $intent->id);
+        session()->put('payment.paymentIntentId', $intent->id);
 
-        return redirect()->route('payments.approval');
+        return redirect()->route('payment.approval');
     }
 
     public function handleApproval()
     {
-        if (session()->has('paymentIntentId')) {
-            $paymentIntentId = session()->get('paymentIntentId');
+        if (session()->has('payment.paymentIntentId')) {
+
+            $paymentIntentId = session()->get('payment.paymentIntentId');
 
             $confirmation = $this->confirmPayment($paymentIntentId);
 
+            // if ($confirmation->status === 'requires_action') {
+            //     $clientSecret = $confirmation->client_secret;
 
-            if ($confirmation->status === 'requires_action') {
-                $clientSecret = $confirmation->client_secret;
-
-                return view('stripe.3d-secure')->with([
-                    'clientSecret' => $clientSecret,
-                ]);
-            }
+            //     return view('stripe.3d-secure')->with([
+            //         'clientSecret' => $clientSecret,
+            //     ]);
+            // }
 
             if ($confirmation->status === 'succeeded') {
                 $name = $confirmation->charges->data[0]->billing_details->name;
                 $currency = strtoupper($confirmation->currency);
-                $amount = $confirmation->amount / $this->resolveFactor($currency);
+                $amount = $confirmation->amount; // value in cents
+                $transactionId = $confirmation->charges->data[0]->id;
 
-                return redirect()->route('payments.confirmed');
+                session()->put('payment.transactionId', $transactionId);
 
+                // payment confirmed route handles the order processing
+                return redirect()->route('payment.confirmed');
             }
         }
 
-        return redirect()
-            ->route('home')
+        return redirect()->route('checkout')
             ->withErrors('We are unable to confirm your payment. Try again, please');
+    }
+
+    function dollarsToCents(float $value) : int
+    {
+        return round($value * 100);
     }
 
     public function createIntent($value, $currency, $paymentMethod)
@@ -92,7 +99,7 @@ class StripeService
             '/v1/payment_intents',
             [],
             [
-                'amount' => round($value * $this->resolveFactor($currency)),
+                'amount' => dollarsToCents($value),
                 'currency' => strtolower($currency),
                 'payment_method' => $paymentMethod,
                 'confirmation_method' => 'manual',
@@ -122,14 +129,4 @@ class StripeService
         );
     }
 
-    public function resolveFactor($currency)
-    {
-        $zeroDecimalCurrencies = ['JPY'];
-
-        if (in_array(strtoupper($currency), $zeroDecimalCurrencies)) {
-            return 1;
-        }
-
-        return 100;
-    }
 }

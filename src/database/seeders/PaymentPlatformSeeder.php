@@ -11,44 +11,16 @@ class PaymentPlatformSeeder extends Seeder
     public function run()
     {
         PaymentPlatform::create([
-            'name' => 'PayPal',
-            'alias' => 'paypal',
+            'platform_name' => 'PayPal', // service and class name
+            'method' => 'PayPal', // Display and collapse component name
             'active' => true,
         ]);
+
         PaymentPlatform::create([
-            'name' => 'Stripe',
-            'alias' => 'stripe',
-            'active' => true
+            'platform_name' => 'Stripe',
+            'method' => 'Credit Card',
+            'active' => true,
         ]);
-        PaymentPlatform::create([
-            'name' => 'Visa',
-            'alias' => 'visa',
-            'active' => false
-        ]);
-        PaymentPlatform::create([
-            'name' => 'MasterCard',
-            'alias' => 'mastercard',
-            'active' => false
-        ]);
-        PaymentPlatform::create([
-            'name' => 'American Express',
-            'alias' => 'american-express',
-            'active' => false
-        ]);
-        PaymentPlatform::create([
-            'name' => 'AfterPay',
-            'alias' => 'afterpay',
-            'active' => false
-        ]);
-        PaymentPlatform::create([
-            'name' => 'ZipPay',
-            'alias' => 'zippay',
-            'active' => false
-        ]);
-        PaymentPlatform::create([
-            'name' => 'Direct Deposit',
-            'alias' => 'direct-deposit',
-            'active' => false
-        ]);
+
     }
 }

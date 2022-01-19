@@ -41,7 +41,8 @@ class PayPalService
         return "Basic {$credentials}";
     }
 
-    // the request is not required for paypal but it is for other platforms so it needs to be included
+    // request not required for paypal but other platforms it included
+    // check api credentials and redirect to service 'approved' uri
     public function handlePayment($total, $request, $currency = 'AUD')
     {
         // paypal api urls(self, approve, update, capture)
@@ -51,30 +52,28 @@ class PayPalService
         // get the approval url
         $approve = $orderLinks->where('rel', 'approve')->first();
         // add the paypal response approval id to session
-        session()->put('cart.approvalId', $order->id);
+        session()->put('payment.approvalId', $order->id);
         // open paypal login and pay
         return redirect($approve->href);
     }
 
     public function handleApproval()
     {
-        if (session()->has('cart.approvalId')) {
+        if (session()->has('payment.approvalId')) {
 
-            $approvalId = session()->get('cart.approvalId');
+            $approvalId = session()->get('payment.approvalId');
 
             $payment = $this->capturePayment($approvalId);
 
             $transactionId = $payment->purchase_units[0]->payments->captures[0]->id;
 
-            session()->put('cart.transactionId', $transactionId);
+            session()->put('payment.transactionId', $transactionId);
 
-            return redirect()->route('payments.confirmed');
+            // payment confirmed route handles the order processing
+            return redirect()->route('payment.confirmed');
         }
 
-        // NK::TD
-        return redirect()
-            ->route('home')
-            ->withErrors('We cannot capture the payment. Try again, please');
+        return redirect()->route('checkout')->withErrors('We cannot capture the payment. Try again, please');
     }
 
     public function createOrder($value, $currency)
@@ -98,8 +97,8 @@ class PayPalService
                     'brand_name' => config('app.name'),
                     'shipping_preference' => 'NO_SHIPPING',
                     'user_action' => 'PAY_NOW',
-                    'return_url' => route('payments.approval'),
-                    'cancel_url' => route('payments.cancelled'),
+                    'return_url' => route('payment.approval'),
+                    'cancel_url' => route('payment.cancelled'),
                 ]
             ],
             [],

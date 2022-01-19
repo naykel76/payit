@@ -30,7 +30,7 @@ class PaymentController extends Controller
 
         $rules = [
             'payment_platform' => ['required', 'exists:payment_platforms,id'],
-            // 'agree' => 'accepted'
+            'agree' => 'accepted'
         ];
 
         $request->validate($rules);
@@ -38,37 +38,49 @@ class PaymentController extends Controller
         $paymentPlatform = $this->paymentPlatformResolver
             ->resolveService($request->payment_platform);
 
-        session()->put('paymentPlatformId', $request->payment_platform);
+        session()->put('payment.paymentPlatformId', $request->payment_platform);
+
+        // NK::TD fix this work around for different cart totals
 
         // not all platforms will require values from the $request but it is still required!
-        return $paymentPlatform->handlePayment(session('cart.total'), $request);
+        if (session('cart')->total) {
+            return $paymentPlatform->handlePayment(session('cart')->total, $request);
+        } else {
+            return $paymentPlatform->handlePayment(session('cart.total'), $request);
+        }
     }
 
     public function approval()
     {
-        if (session()->has('paymentPlatformId')) {
+        if (session()->has('payment.paymentPlatformId')) {
             $paymentPlatform = $this->paymentPlatformResolver
-                ->resolveService(session()->get('paymentPlatformId'));
+                ->resolveService(session()->get('payment.paymentPlatformId'));
 
             return $paymentPlatform->handleApproval();
         }
 
-        return redirect()
-            ->route('home')
+        return redirect()->route('checkout')
             ->withErrors('We cannot retrieve your payment platform. Try again, please.');
     }
 
     public function cancelled()
     {
-        return redirect()
-            ->route('home')
+        session()->remove('payment');
+        return redirect()->route('checkout')
             ->withErrors('You cancelled the payment.');
     }
 
+    /**
+     * Confirmed payment actions
+     */
     public function confirmed()
     {
-        return redirect()
-            ->route('home')
-            ->withSuccess(['payment' => "We received your payment."]);
+        // add order processing here!
+        // override by adding payment.process route in local web.php
+
+        return redirect()->route('user.dashboard')
+            ->withSuccess('Your payment has been processed');
     }
+
+
 }
