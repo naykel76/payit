@@ -23,8 +23,6 @@
 
 
 
-
-
 ## Installation
 
 To get started, install Payit using the Composer package manager:
