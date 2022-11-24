@@ -7,7 +7,7 @@
 # NAYKEL Payment Management Package
 
 
-## Thinks to know
+## Things to know
 
 **On inception of this package there is a bit of confusion surrounding the database column names and roles. This confusion is caused by the fact that there are different providers such as PayPal and Stipe, and each provider may have different payment methods such as express checkout for PayPal, or credit card and afterpay for Stripe.**
 

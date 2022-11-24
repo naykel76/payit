@@ -22,7 +22,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Naykel\\Payit\\": "src/"
+            "Naykel\\Payit\\": "src/",
+            "Naykel\\Payit\\Database\\Seeders\\": "src/database/seeders/"
         }
     },
     "extra": {
@@ -33,3 +34,4 @@
         }
     }
 }
+

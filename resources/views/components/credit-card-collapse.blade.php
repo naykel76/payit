@@ -27,15 +27,13 @@
         .StripeElement--webkit-autofill {
             background-color: #fefde5 !important;
         }
-
     </style>
 @endpush
 
-<label class="mt-3" for="card-element">
-    Card details:
-</label>
-
-<div id="cardElement"></div>
+<div id="card-element"></div>
+{{-- <div id="card-number"></div>
+<div id="card-expiry"></div>
+<div id="card-cvc"></div> --}}
 
 <small class="form-text text-muted" id="cardErrors" role="alert"></small>
 
@@ -46,17 +44,23 @@
     <script>
         const stripe = Stripe('{{ config('services.stripe.key') }}');
 
-        const elements = stripe.elements({
-            locale: 'en'
-        });
+        const elements = stripe.elements();
+
         const cardElement = elements.create('card');
+        // const cardNumberElement = elements.create('cardNumber');
+        // const cardExpiryElement = elements.create('cardExpiry');
+        // const cardCvcElement = elements.create('cardCvc');
 
-        cardElement.mount('#cardElement');
-
+        cardElement.mount('#card-element');
+        // cardNumberElement.mount('#card-number');
+        // cardExpiryElement.mount('#card-expiry');
+        // cardCvcElement.mount('#card-cvc');
     </script>
 
     <script>
+        // set paymentForm from payment-options component
         const form = document.getElementById('paymentForm');
+        // set payButton from payment-options component
         const payButton = document.getElementById('payButton');
 
         payButton.addEventListener('click', async (e) => {
@@ -87,6 +91,5 @@
                 }
             }
         });
-
     </script>
 @endpush

@@ -52,10 +52,9 @@
 
         </div>
 
-        <div class="frm-row">
+        <div class="frm-row mt">
             <label class="fw4">
                 <input name="agree" id="agree" type="checkbox" />&nbsp; I have read and agree to <a href="/terms-of-use" target="_blank">Terms & Conditions</a> and <a href="/privacy-policy" target="_blank">Privacy Policy</a>.
-
             </label>
         </div>
 
