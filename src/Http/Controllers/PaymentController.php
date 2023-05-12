@@ -1,6 +1,6 @@
 <?php
 
-namespace Naykel\Payit\Controllers;
+namespace Naykel\Payit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,8 +12,6 @@ class PaymentController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct(PaymentPlatformResolver $paymentPlatformResolver)
     {
@@ -22,31 +20,31 @@ class PaymentController extends Controller
 
     /**
      * Obtain a payment details.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function pay(Request $request)
     {
 
-        $rules = [
+        // make sure payment type, and agree to conditions are set
+        $request->validate([
             'payment_platform' => ['required', 'exists:payment_platforms,id'],
             'agree' => 'accepted'
-        ];
+        ]);
 
-        $request->validate($rules);
+        // make payment_platform more relatable because it is an id number
+        $paymentPlatformId = $request->payment_platform;
 
-        $paymentPlatform = $this->paymentPlatformResolver
-            ->resolveService($request->payment_platform);
+        // resolve the payment gateway url and keys
+        $paymentPlatformCredentials = $this->paymentPlatformResolver
+            ->resolveService($paymentPlatformId);
 
-        session()->put('payment.paymentPlatformId', $request->payment_platform);
+        session()->put('payment.paymentPlatformId', $paymentPlatformId);
 
         // NK::TD fix this work around for different cart totals
-
         // not all platforms will require values from the $request but it is still required!
         if (session('cart')->total) {
-            return $paymentPlatform->handlePayment(session('cart')->total, $request);
+            return $paymentPlatformCredentials->handlePayment(session('cart')->total, $request);
         } else {
-            return $paymentPlatform->handlePayment(session('cart.total'), $request);
+            return $paymentPlatformCredentials->handlePayment(session('cart.total'), $request);
         }
     }
 

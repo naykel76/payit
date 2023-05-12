@@ -68,7 +68,7 @@
             </div>
         @endif
 
-        <button type="submit" id="payButton" class="btn primary fullwidth">Process Payment</button>
+        <button type="submit" id="payButton" class="btn primary w-full">Process Payment</button>
 
     </form>
 

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Naykel\Payit\Controllers\PaymentController;
+use Naykel\Payit\Http\Controllers\PaymentController;
 
 Route::middleware(['web', 'auth'])->prefix('payment')->name('payment')->group(function () {
 
