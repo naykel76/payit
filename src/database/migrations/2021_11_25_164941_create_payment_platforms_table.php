@@ -8,9 +8,6 @@ class CreatePaymentPlatformsTable extends Migration
 {
     public function up()
     {
-
-
-
         Schema::create('payment_platforms', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('platform_name', 50)->unique(); // used to resolve service, must be the same as

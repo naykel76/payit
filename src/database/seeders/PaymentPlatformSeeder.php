@@ -10,9 +10,10 @@ class PaymentPlatformSeeder extends Seeder
 {
     public function run()
     {
+        // the method is used to identify which collapse component to display
         PaymentPlatform::create([
             'platform_name' => 'PayPal', // service and class name
-            'method' => 'PayPal', // Display and collapse component name
+            'method' => 'PayPal', // Platform collapse component and label name
             'active' => true,
         ]);
 
