@@ -2,36 +2,21 @@
 
 namespace Naykel\Payit\Services;
 
-use Naykel\Payit\Traits\ConsumesExternalServices;
-
-class StripeService
+class StripeService extends PaymentService
 {
-    use ConsumesExternalServices;
-
-    protected $baseUri;
-
-    protected $key;
-
-    protected $secret;
-
-    protected $plans;
 
     public function __construct()
     {
-        $this->baseUri = config('services.stripe.base_uri');
-        $this->key = config('services.stripe.key');
-        $this->secret = config('services.stripe.secret');
-        $this->plans = config('services.stripe.plans');
+        parent::__construct('stripe');
     }
 
-    public function resolveAuthorization(&$queryParams, &$formParams, &$headers)
+    protected function mapApiConfigKeys(): array
     {
-        $headers['Authorization'] = $this->resolveAccessToken();
-    }
-
-    public function decodeResponse($response)
-    {
-        return json_decode($response);
+        return [
+            'base_uri' => 'base_uri',
+            'key' => 'key',
+            'secret' => 'secret'
+        ];
     }
 
     public function resolveAccessToken()
@@ -39,14 +24,13 @@ class StripeService
         return "Bearer {$this->secret}";
     }
 
-
     public function handlePayment($total, $request, $currency = 'AUD')
     {
-
         $request->validate([
             'payment_method' => 'required',
         ]);
 
+        // manually set the payment_method to ??
         $intent = $this->createIntent($total, $currency, $request->payment_method);
 
         session()->put('payment.paymentIntentId', $intent->id);
@@ -87,7 +71,7 @@ class StripeService
             ->withErrors('We are unable to confirm your payment. Try again, please');
     }
 
-    function dollarsToCents(float $value) : int
+    function dollarsToCents(float $value): int
     {
         return round($value * 100);
     }
@@ -128,5 +112,4 @@ class StripeService
             ],
         );
     }
-
 }
