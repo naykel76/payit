@@ -1,29 +1,54 @@
 {
     "name": "naykel/payit",
     "description": "Payment gateways package for NayKel applications",
+    "keywords": [
+        "Naykel",
+        "laravel",
+        "payit"
+    ],
+    "homepage": "https://naykel.com.au",
     "license": "MIT",
     "authors": [
         {
             "name": "Nathan Watts",
             "email": "nathan@naykel.com.au",
-            "homepage": "https://naykel.com.au"
+            "role": "Developer"
         }
     ],
-    "homepage": "https://naykel.com.au",
-    "keywords": [
-        "Laravel",
-        "Naykel"
-    ],
     "require": {
-        "php": "^8.1"
+        "php": "^8.2",
+        "illuminate/contracts": "^10.0||^11.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0"
+        "laravel/pint": "^1.14",
+        "nunomaduro/collision": "^8.1.1||^7.10.0",
+        "orchestra/testbench": "^9.0.0||^8.22.0",
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-arch": "^2.7",
+        "pestphp/pest-plugin-laravel": "^2.3"
     },
     "autoload": {
         "psr-4": {
             "Naykel\\Payit\\": "src/",
-            "Naykel\\Payit\\Database\\Seeders\\": "src/database/seeders/"
+            "Naykel\\Payit\\Database\\Factories\\": "database/factories/",
+            "Naykel\\Payit\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Naykel\\Payit\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     },
     "extra": {
@@ -32,5 +57,7 @@
                 "Naykel\\Payit\\PayitServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

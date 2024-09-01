@@ -2,7 +2,6 @@
 
 namespace Naykel\Payit\Database\Seeders;
 
-
 use Naykel\Payit\Models\PaymentPlatform;
 use Illuminate\Database\Seeder;
 
@@ -22,6 +21,5 @@ class PaymentPlatformSeeder extends Seeder
             'method' => 'Credit Card',
             'active' => true,
         ]);
-
     }
 }
