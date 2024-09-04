@@ -2,13 +2,17 @@
 
 namespace Naykel\Payit\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentPlatform extends Model
 {
-    protected $fillable = [
-        'name',
-        'image',
-        'subscriptions_enabled',
-    ];
+    use HasFactory;
+
+    protected $guarded = [];
+
+    protected static function newFactory()
+    {
+        return \Naykel\Payit\Database\Factories\PaymentPlatformFactory::new();
+    }
 }

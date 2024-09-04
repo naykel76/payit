@@ -23,29 +23,30 @@ class PaymentController extends Controller
      */
     public function pay(Request $request)
     {
+        $ppid = $request->ppid;
 
-        // make sure payment type, and agree to conditions are set
         $request->validate([
-            'payment_platform' => ['required', 'exists:payment_platforms,id'],
-            'agree' => 'accepted'
+            'ppid' => ['required', 'exists:payment_platforms,id'],
+            // 'agree' => 'accepted',
+        ], [
+            'ppid.required' => 'Please select a payment method',
+            // 'agree.accepted' => 'You must agree to the terms and conditions.'
         ]);
 
-        // make payment_platform more relatable because it is an id number
-        $paymentPlatformId = $request->payment_platform;
+        // Resolve the payment service for the given platform ID (ppid)
+        $paymentService = $this->paymentPlatformResolver->resolveService($ppid);
 
-        // resolve the payment gateway url and keys
-        $paymentPlatformCredentials = $this->paymentPlatformResolver
-            ->resolveService($paymentPlatformId);
+        session()->put('payment.paymentPlatformId', $ppid);
 
-        session()->put('payment.paymentPlatformId', $paymentPlatformId);
-
-        // NK::TD fix this work around for different cart totals
-        // not all platforms will require values from the $request but it is still required!
-        if (session('cart')->total) {
-            return $paymentPlatformCredentials->handlePayment(session('cart')->total, $request);
-        } else {
-            return $paymentPlatformCredentials->handlePayment(session('cart.total'), $request);
-        }
+        // NK::TD fix this work around for different cart totals not all
+        // platforms will require values from the $request but it is still
+        // required!
+        // if (session('cart')->total) {
+        //     return $paymentService->handlePayment(session('cart')->total, $request);
+        // } else {
+        //     return $paymentService->handlePayment(session('cart.total'), $request);
+        // }
+        return $paymentService->handlePayment(88, $request);
     }
 
     public function approval()
@@ -57,8 +58,10 @@ class PaymentController extends Controller
             return $paymentPlatform->handleApproval();
         }
 
-        return redirect()->route('checkout')
+        return redirect()->back()
             ->withErrors('We cannot retrieve your payment platform. Try again, please.');
+        // return redirect()->route('checkout')
+        //     ->withErrors('We cannot retrieve your payment platform. Try again, please.');
     }
 
     public function cancelled()
@@ -76,9 +79,12 @@ class PaymentController extends Controller
         // add order processing here!
         // override by adding payment.process route in local web.php
 
-        return redirect()->route('user.dashboard')
+        // this needs some more thought. in the case of FOL, redirecting to the
+        // dashboard with a message might be good enough, on the other hand it
+        // may be better to redirect to a dedicated page with a message and
+        // order details.
+
+        return redirect()->route(config('payit.return_route'))
             ->withSuccess('Your payment has been processed');
     }
-
-
 }

@@ -20,7 +20,7 @@ class PaymentPlatformResolver
         $provider = strtolower(PaymentPlatform::firstWhere('id', $ppid)->platform_name);
         $provider = str_replace(' ', '', $provider);
 
-        $service = config("services.{$provider}.class");
+        $service = config("payit.{$provider}.class");
 
         if ($service) {
             return resolve($service);

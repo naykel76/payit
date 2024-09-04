@@ -6,66 +6,44 @@
 
 # NAYKEL Payment Management Package
 
-<!-- TOC -->
-
-- [Entity Relationship Diagram](#entity-relationship-diagram)
 - [User checkout and payment process flowchart](#user-checkout-and-payment-process-flowchart)
 - [Sequence Diagrams](#sequence-diagrams)
-    - [Sequence diagram for payment options in checkout process](#sequence-diagram-for-payment-options-in-checkout-process)
-    - [Sequence diagram for stipe credit card payment](#sequence-diagram-for-stipe-credit-card-payment)
-
-<!-- /TOC -->
+  - [Sequence diagram for payment options in checkout process](#sequence-diagram-for-payment-options-in-checkout-process)
+  - [Sequence diagram for stipe credit card payment](#sequence-diagram-for-stipe-credit-card-payment)
 
 `ppid` Payment Platform ID
 
-<a id="markdown-entity-relationship-diagram" name="entity-relationship-diagram"></a>
+## User checkout and payment process flowchart
 
-## Entity Relationship Diagram
+The user must be logged in to proceed with the checkout process. If the user is not logged in, they
+are redirected to the login page. Once logged in, the user can proceed to the checkout page. 
 
 ```mermaid
-erDiagram
-    PAYMENTS {
-        bigint id PK
-        string platform_name "PayPal, Stripe, etc"
-        string method "Credit Card, PayPal, express etc"
-        boolean active
-    }
+graph LR
+    Start[Click <br> Checkout] --> IsLoggedIn{Logged in?}
+    IsLoggedIn -->|Yes| DisplayCheckout[Display checkout]
+    IsLoggedIn -->|No| RedirectToLogin[Redirect to login]
+    RedirectToLogin --> Login[User logs in]
+    Login --> DisplayCheckout
 ```
-
-**method** is used for both the label, and to identify the collapse component to display on the front-end.
-
-The name `method` may be a bit deceiving as it is used to identify the component to display on the
-front-end as well as the label for the payment method.
-
-For example, if the method is 'Credit Card' then the label for the payment method will be 'Credit
-Card' and the component to be displayed will be `credit-card`.
-
-
-<a id="markdown-user-checkout-and-payment-process-flowchart" name="user-checkout-and-payment-process-flowchart"></a>
-
-## User checkout and payment process flowchart
 
 ```mermaid
 graph TB
-    A[Start] --> B{Is user logged in?}
-    B -->|Yes| C[Display checkout view]
-    B -->|No| D[Redirect to login]
-    D --> E[User logs in]
-    E --> C
-    C --> F[User selects payment method]
-    F --> G[Proceed to payment]
-    G --> H{Is payment successful?}
+
+    SelectPaymentMethod[Select payment method] -->|Credit Card| DisplayCardComponent[Display credit <br> card component]
+    SelectPaymentMethod[Select payment method] -->|PayPal| PayPal[Display redirect <br> to PayPal message]
+
+    DisplayCardComponent --> EnterCardDetails
+
+    SelectPaymentMethod --> h[Proceed to payment]
+    --> H{Is payment successful?}
     H -->|Yes| I[Display success message]
     H -->|No| J[Display payment error]
     J --> F
     I --> K[End]
 ```
 
-<a id="markdown-sequence-diagrams" name="sequence-diagrams"></a>
-
 ## Sequence Diagrams
-
-<a id="markdown-sequence-diagram-for-payment-options-in-checkout-process" name="sequence-diagram-for-payment-options-in-checkout-process"></a>
 
 ### Sequence diagram for payment options in checkout process
 
@@ -74,7 +52,6 @@ options. It shows how the system, specifically the `PaymentOptions` component, f
 payment methods from the `PaymentPlatform` model (which represents data in the database). These
 payment methods are then presented to the user in the Checkout view. The user can then select
 their preferred payment method from the provided options for further processing.
-
 
 ** method is used for both the label, and to identify the collapse component to display on the front-end.
 
@@ -104,16 +81,6 @@ sequenceDiagram
     deactivate view
 ```
 
----
----
----
----
----
----
----
-
-
-
 This diagram assumes you are logged, on the checkout page about to select a payment method.
 
 ```mermaid
@@ -141,8 +108,6 @@ sequenceDiagram
         controller->>user: Display error message
     end
 ```
-
-<a id="markdown-sequence-diagram-for-stipe-credit-card-payment" name="sequence-diagram-for-stipe-credit-card-payment"></a>
 
 ### Sequence diagram for stipe credit card payment
 
@@ -186,36 +151,11 @@ sequenceDiagram
 ```
 
 
----
----
----
----
----
----
----
----
 
-```mermaid
-classDiagram
-    PaymentOptions --|> Component : Extends
-    class PaymentOptions {
-        +bool v2
-        +__construct(bool)
-        +render() : view
-    }
-    class Component {
-    }
-    PaymentPlatform -- PaymentOptions : Uses
-    class PaymentPlatform {
-        +where(string, bool) : PaymentPlatform
-        +get() : Collection
-    }
-```
 
 
 
 ```mermaid
-
 classDiagram
     class PaymentController {
         -PaymentPlatformResolver paymentPlatformResolver
@@ -232,4 +172,34 @@ classDiagram
     PaymentController --> PaymentPlatformResolver : Uses
     PaymentController --> Request : Uses
     PaymentController --> Response : Returns
+```
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant PaymentController
+    participant PaymentPlatformResolver
+    participant PaymentService
+    participant PayPalService
+    participant StripeService
+    participant PaymentPlatformModel
+    participant PaymentPlatformTable
+    participant ConsumesExternalServices
+
+    User->>PaymentController: Initiates payment
+
+
+    
+    PaymentController->>PaymentPlatformResolver: Resolve payment platform
+    PaymentPlatformResolver->>PaymentPlatformModel: Query platform by ID
+    PaymentPlatformModel->>PaymentPlatformTable: Fetch platform details
+    PaymentPlatformTable-->>PaymentPlatformModel: Return platform details
+    PaymentPlatformModel-->>PaymentPlatformResolver: Return platform details
+    PaymentPlatformResolver->>PaymentService: Resolve service class
+    PaymentService->>PayPalService: If platform is PayPal
+    PaymentService->>StripeService: If platform is Stripe
+    PaymentService->>ConsumesExternalServices: Use external services trait
+    ConsumesExternalServices->>PaymentService: Make HTTP request
+    PaymentService-->>PaymentController: Return payment service instance
+    PaymentController-->>User: Proceed with payment
 ```

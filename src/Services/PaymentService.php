@@ -23,7 +23,7 @@ abstract class PaymentService
     public function __construct(string $serviceConfigKey)
     {
         $configKeys = $this->mapApiConfigKeys();
-        $config = config("services.{$serviceConfigKey}");
+        $config = config("payit.{$serviceConfigKey}");
 
         $this->baseUri = $config[$configKeys['base_uri']];
         $this->key = $config[$configKeys['key']];

@@ -29,12 +29,8 @@ class StripeService extends PaymentService
         $request->validate([
             'payment_method' => 'required',
         ]);
-
-        // manually set the payment_method to ??
         $intent = $this->createIntent($total, $currency, $request->payment_method);
-
         session()->put('payment.paymentIntentId', $intent->id);
-
         return redirect()->route('payment.approval');
     }
 
@@ -45,14 +41,6 @@ class StripeService extends PaymentService
             $paymentIntentId = session()->get('payment.paymentIntentId');
 
             $confirmation = $this->confirmPayment($paymentIntentId);
-
-            // if ($confirmation->status === 'requires_action') {
-            //     $clientSecret = $confirmation->client_secret;
-
-            //     return view('stripe.3d-secure')->with([
-            //         'clientSecret' => $clientSecret,
-            //     ]);
-            // }
 
             if ($confirmation->status === 'succeeded') {
                 $name = $confirmation->charges->data[0]->billing_details->name;
@@ -96,20 +84,6 @@ class StripeService extends PaymentService
         return $this->makeRequest(
             'POST',
             "/v1/payment_intents/{$paymentIntentId}/confirm",
-        );
-    }
-
-    public function createCustomer($name, $email, $paymentMethod)
-    {
-        return $this->makeRequest(
-            'POST',
-            '/v1/customers',
-            [],
-            [
-                'name' => $name,
-                'email' => $email,
-                'payment_method' => $paymentMethod,
-            ],
         );
     }
 }

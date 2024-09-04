@@ -3,6 +3,7 @@
 
 ## 0.3.0
 - Added: `PaymentService` abstract class and updated services to extend it
+- Added: configuration to `config/payit.php`
 - Moved: platform components to `payment-platforms` directory
 - Removed: unnecessary icons (use gt icons)
 

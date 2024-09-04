@@ -1,20 +1,8 @@
 <div class="bx">
-    {{-- @php
-        session(['cart' => ['total' => 100.0]]);
-        dd(session('cart')->total);
-    @endphp --}}
-
-    {{-- @if (session('cart')->total)
-        <p class="txt-lg"><strong>Total: </strong>${{ number_format(session('cart')->total, 2) }}</p>
-    @else
-        <p class="txt-lg"><strong>Total: </strong>${{ session('cart.total') }}</p>
-    @endif --}}
 
     <form id="paymentForm" action="{{ route('payment.pay') }}" method="POST">
         @csrf
-
         <div x-data="{ active: 0 }">
-
             @foreach ($paymentPlatforms as $paymentPlatform)
                 <div x-data="{
                     id: {{ $paymentPlatform->id }},
@@ -23,9 +11,6 @@
                 }" role="region">
 
                     <div class="bdr" style="{{ $loop->first ? 'margin-bottom: -1px' : '' }}">
-
-                        {{-- Label and radio button for each payment platform. When the radio button is clicked, it toggles
-                        the 'expanded' state and displays the payment component for the selected payment platform. --}}
                         <label for="{{ $paymentPlatform->id }}" style="margin: 0"
                             class="bg-neutral-50 pxy-05 cursor-pointer w-full">
 
