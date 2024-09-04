@@ -9,8 +9,10 @@ class PaymentOptions extends Component
 {
     public function render()
     {
+        $paymentPlatforms = PaymentPlatform::where('active', true)->get();
+
         return view('payit::components.payment-options')->with([
-            'paymentPlatforms' => PaymentPlatform::where('active', true)->get(),
+            'paymentPlatforms' => $paymentPlatforms,
         ]);
     }
 }
