@@ -1,11 +1,10 @@
 <div class="bx">
 
-    {{-- NK::TD Fix and update LMS Cart --}}
-    @if(session('cart')->total)
+    {{-- @if(session('cart')->total)
         <p class="txt-lg"><strong>Total: </strong>${{ number_format(session('cart')->total, 2) }}</p>
     @else
         <p class="txt-lg"><strong>Total: </strong>${{ session('cart.total') }}</p>
-    @endif
+    @endif --}}
 
     <form id="paymentForm" action="{{ route('payment.pay') }}" method="POST">
 

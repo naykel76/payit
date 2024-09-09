@@ -1,5 +1,8 @@
 # Changelog
 
+
+## 0.3.0 (WIP)
+
 ## 0.2.0
 - Moved: controllers to http directory
 - Updated: minor changes to payment controller to be more concise
