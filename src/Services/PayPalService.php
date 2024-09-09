@@ -53,6 +53,7 @@ class PayPalService
         $approve = $orderLinks->where('rel', 'approve')->first();
         // add the paypal response approval id to session
         session()->put('payment.approvalId', $order->id);
+
         // open paypal login and pay
         return redirect($approve->href);
     }
@@ -90,8 +91,8 @@ class PayPalService
                         'amount' => [
                             'currency_code' => strtoupper($currency),
                             'value' => $value,
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'application_context' => [
                     'brand_name' => config('app.name'),
@@ -99,7 +100,7 @@ class PayPalService
                     'user_action' => 'PAY_NOW',
                     'return_url' => route('payment.approval'),
                     'cancel_url' => route('payment.cancelled'),
-                ]
+                ],
             ],
             [],
             $isJsonRequest = true,
@@ -114,7 +115,7 @@ class PayPalService
             [],
             [],
             [
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ],
         );
     }

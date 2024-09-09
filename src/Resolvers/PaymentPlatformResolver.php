@@ -18,7 +18,7 @@ class PaymentPlatformResolver
 
         // fetch platform name to be resolved, convert to lower case and strip spaces
         $provider = strtolower($this->paymentPlatforms->firstWhere('id', $paymentPlatformId)->platform_name);
-        $provider = str_replace(' ', '', $provider );
+        $provider = str_replace(' ', '', $provider);
 
         $service = config("services.{$provider}.class");
 

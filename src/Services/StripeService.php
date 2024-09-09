@@ -39,7 +39,6 @@ class StripeService
         return "Bearer {$this->secret}";
     }
 
-
     public function handlePayment($total, $request, $currency = 'AUD')
     {
 
@@ -87,7 +86,7 @@ class StripeService
             ->withErrors('We are unable to confirm your payment. Try again, please');
     }
 
-    function dollarsToCents(float $value) : int
+    public function dollarsToCents(float $value): int
     {
         return round($value * 100);
     }
@@ -128,5 +127,4 @@ class StripeService
             ],
         );
     }
-
 }

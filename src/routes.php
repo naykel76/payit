@@ -11,5 +11,3 @@ Route::middleware(['web', 'auth'])->prefix('payment')->name('payment')->group(fu
     Route::get('/confirmed', [PaymentController::class, 'confirmed'])->name('.confirmed');
 
 });
-
-

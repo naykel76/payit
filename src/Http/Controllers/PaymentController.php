@@ -27,7 +27,7 @@ class PaymentController extends Controller
         // make sure payment type, and agree to conditions are set
         $request->validate([
             'payment_platform' => ['required', 'exists:payment_platforms,id'],
-            'agree' => 'accepted'
+            'agree' => 'accepted',
         ]);
 
         // make payment_platform more relatable because it is an id number
@@ -64,6 +64,7 @@ class PaymentController extends Controller
     public function cancelled()
     {
         session()->remove('payment');
+
         return redirect()->route('checkout')
             ->withErrors('You cancelled the payment.');
     }
@@ -79,6 +80,4 @@ class PaymentController extends Controller
         return redirect()->route('user.dashboard')
             ->withSuccess('Your payment has been processed');
     }
-
-
 }
