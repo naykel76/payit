@@ -1,35 +1,3 @@
-@push('head')
-    <style type="text/css">
-        .StripeElement {
-            box-sizing: border-box;
-
-            height: 40px;
-
-            padding: 10px 12px;
-
-            border: 1px solid transparent;
-            border-radius: 4px;
-            background-color: white;
-
-            box-shadow: 0 1px 3px 0 #e6ebf1;
-            -webkit-transition: box-shadow 150ms ease;
-            transition: box-shadow 150ms ease;
-        }
-
-        .StripeElement--focus {
-            box-shadow: 0 1px 3px 0 #cfd7df;
-        }
-
-        .StripeElement--invalid {
-            border-color: #fa755a;
-        }
-
-        .StripeElement--webkit-autofill {
-            background-color: #fefde5 !important;
-        }
-    </style>
-@endpush
-
 <div id="card-element"></div>
 <small class="form-text text-muted" id="cardErrors" role="alert"></small>
 <input type="hidden" name="payment_method" id="paymentMethod">
@@ -53,10 +21,8 @@
     </script>
 
     <script>
-        // set paymentForm from payment-options component
-        const form = document.getElementById('paymentForm');
-        // set payButton from payment-options component
-        const payButton = document.getElementById('payButton');
+        const form = document.getElementById('payment-form');
+        const payButton = document.getElementById('pay-button');
 
         payButton.addEventListener('click', async (e) => {
             if (form.elements.platformId.value === "{{ $paymentPlatform->id }}") {
@@ -87,4 +53,36 @@
             }
         });
     </script>
+@endpush
+
+@push('head')
+    <style type="text/css">
+        .StripeElement {
+            box-sizing: border-box;
+
+            height: 40px;
+
+            padding: 10px 12px;
+
+            border: 1px solid transparent;
+            border-radius: 4px;
+            background-color: white;
+
+            box-shadow: 0 1px 3px 0 #e6ebf1;
+            -webkit-transition: box-shadow 150ms ease;
+            transition: box-shadow 150ms ease;
+        }
+
+        .StripeElement--focus {
+            box-shadow: 0 1px 3px 0 #cfd7df;
+        }
+
+        .StripeElement--invalid {
+            border-color: #fa755a;
+        }
+
+        .StripeElement--webkit-autofill {
+            background-color: #fefde5 !important;
+        }
+    </style>
 @endpush

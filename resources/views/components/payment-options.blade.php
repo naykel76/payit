@@ -1,5 +1,5 @@
 <div class="bx">
-    <form id="paymentForm" action="{{ route('payment.initiate') }}" method="POST">
+    <form id="payment-form" action="{{ route('payment.initiate') }}" method="POST">
         @csrf
         <div x-data="{}">
             @foreach ($paymentPlatforms as $paymentPlatform)
@@ -37,6 +37,6 @@
 
         <x-gt-errors />
 
-        <button type="submit" id="payButton" class="btn primary w-full">Process Payment</button>
+        <button type="submit" id="pay-button" class="btn primary w-full">Process Payment</button>
     </form>
 </div>
