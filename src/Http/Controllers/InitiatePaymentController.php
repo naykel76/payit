@@ -15,13 +15,18 @@ class InitiatePaymentController
         $request->validate([
             'platformId' => ['required'],
             'agree' => 'accepted',
+            // payment_method is a value returned from the stripe.js client-side
+            // script. It is required only when the platform ID is 2 (Stripe).
+            // This will be reviewed in a future iteration as it is not a good
+            // practice to have this validation and hardcoded value here.
+            'payment_method' => 'required_if:platformId,2',
         ]);
 
         // Resolve the payment service using the provided platform ID.
+        // e.g. StripeService or PayPalService
         $service = $this->paymentPlatformResolver->resolveService($request->platformId);
 
         // Use the resolved service to handle the payment process.
-        // The service is responsible for implementing the `handlePayment` logic.
         return $service->handlePayment(session('cart.total'), $request);
     }
 }

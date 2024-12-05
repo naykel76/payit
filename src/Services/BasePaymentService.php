@@ -25,5 +25,5 @@ abstract class BasePaymentService
         $this->secret = $config['secret'];
     }
 
-    abstract public function handlePayment($amount, $currency);
+    abstract public function handlePayment($amount, $request, $currency);
 }

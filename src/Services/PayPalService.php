@@ -26,8 +26,8 @@ class PayPalService extends BasePaymentService
         return "Basic {$credentials}";
     }
 
-    // request not required for paypal but other platforms it included
-    // check api credentials and redirect to service 'approved' uri
+    // request not required for paypal but it is for stripe. This will be
+    // reviewed in a future iteration.
     public function handlePayment($total, $request, $currency = 'AUD')
     {
         // paypal api urls(self, approve, update, capture)

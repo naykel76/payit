@@ -26,11 +26,6 @@ class StripeService extends BasePaymentService
 
     public function handlePayment($total, $request, $currency = 'AUD')
     {
-
-        $request->validate([
-            'payment_method' => 'required',
-        ]);
-
         $intent = $this->createIntent($total, $currency, $request->payment_method);
 
         session()->put('payment.paymentIntentId', $intent->id);

@@ -7,12 +7,12 @@ use Naykel\Payit\Models\PaymentPlatform;
 class PaymentPlatformResolver
 {
     /**
-     * Resolve the payment platform service based on the platform id.
+     * Resolve the payment platform service based on the platform ID.
      *
-     * @param  $ppid  The id of the payment platform.
-     * @return mixed The resolved payment platform service instance e.g. StripeService or PayPalService.
+     * @param  int  $ppid  The ID of the payment platform.
+     * @return mixed The resolved service instance, e.g., StripeService or PayPalService.
      *
-     * @throws \Exception If the platform is not configured in payit.php.
+     * @throws \Exception If the platform is not properly configured in payit.php.
      */
     public function resolveService($ppid)
     {
