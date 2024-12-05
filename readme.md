@@ -7,3 +7,20 @@
 # NAYKEL Payment Management Package
 
 - Add check to make sure .env is set
+
+
+- update the `resolve` method in the `PaymentPlatformResolver` to be a more updated
+  Laravel way of resolving the platform.
+- remove auth login used for development in layouts
+
+1. Route fires the handle payment method passing in the amount
+2. Create and return the payment intent.
+    - The PaymentIntent includes a client secret that the client side uses to securely complete the payment process.
+
+
+What to Do After Creating a PaymentIntent
+Store the PaymentIntent ID: You need to store the PaymentIntent ID somewhere safe (e.g., in a session or database) because it will be used later to confirm the payment. This is useful in case you need to retrieve or confirm the payment later.
+
+Send the client_secret to the Frontend: The client_secret is required on the client side to confirm the payment and to allow Stripe to communicate with the client. The frontend will use this client_secret to confirm the payment, either via Stripe Elements or Stripe's hosted Checkout page.
+
+Confirm the Payment: Once the PaymentIntent is created, you’ll either confirm it on the client side or backend side (based on your flow). If using the client-side approach, Stripe will handle any 3D Secure or authentication challenges. If you're processing everything backend-side, you can confirm the payment manually.

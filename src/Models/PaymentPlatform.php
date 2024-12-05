@@ -7,22 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentPlatform extends Model
 {
-    // use \Sushi\Sushi;
+    use \Sushi\Sushi;
 
-    // protected $rows = [
-    //     [
-    //         'id' => 1,
-    //         'platform_name' => 'PayPal',
-    //         'method' => 'PayPal',
-    //         'active' => true,
-    //     ],
-    //     [
-    //         'id' => 2,
-    //         'platform_name' => 'Stripe',
-    //         'method' => 'Credit Card',
-    //         'active' => true,
-    //     ],
-    // ];
+    protected $rows = [
+        [
+            'id' => 1,
+            'platform_name' => 'PayPal',
+            'method' => 'PayPal',
+            'active' => true,
+        ],
+        [
+            'id' => 2,
+            'platform_name' => 'Stripe',
+            'method' => 'Credit Card',
+            'active' => true,
+        ],
+    ];
 
     public function scopeActive(Builder $query): Builder
     {

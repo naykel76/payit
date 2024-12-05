@@ -18,28 +18,6 @@ class PaymentController extends Controller
         $this->paymentPlatformResolver = $paymentPlatformResolver;
     }
 
-    /**
-     * Obtain a payment details.
-     */
-    public function pay(Request $request)
-    {
-        // make sure payment type, and agree to conditions are set
-        $request->validate([
-            'payment_platform' => ['required', 'exists:payment_platforms,id'],
-            'agree' => 'accepted'
-        ]);
-
-        // make payment_platform more relatable because it is an id number
-        $paymentPlatformId = $request->payment_platform;
-
-        // resolve the payment gateway url and keys
-        $paymentPlatformCredentials = $this->paymentPlatformResolver->resolveService($paymentPlatformId);
-
-        session()->put('payment.paymentPlatformId', $paymentPlatformId);
-
-        return $paymentPlatformCredentials->handlePayment(session('cart.total'), $request);
-    }
-
     public function approval()
     {
         if (session()->has('payment.paymentPlatformId')) {
