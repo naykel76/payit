@@ -28,7 +28,7 @@ class PayPalService extends BasePaymentService
 
     // request not required for paypal but it is for stripe. This will be
     // reviewed in a future iteration.
-    public function handlePayment($total, $request, $currency = 'AUD')
+    public function initiatePayment($total, $request, $currency = 'AUD')
     {
         // paypal api urls(self, approve, update, capture)
         $order = $this->createOrder($total, $currency);
@@ -37,7 +37,9 @@ class PayPalService extends BasePaymentService
         // get the approval url
         $approve = $orderLinks->where('rel', 'approve')->first();
         // add the paypal response approval id to session
-        session()->put('payment.approvalId', $order->id);
+
+        // is the payment completed? here can i redirect to the payment confirmation page?
+        session()->put('payment.approvalId', $order->id); // "1RA11209B4347653J"
 
         // open paypal login and pay
         return redirect($approve->href);

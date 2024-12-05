@@ -24,7 +24,13 @@ class PaymentPlatform extends Model
         // Standalone payment platforms makes it easier to create single payment
         // options. For example, a single PayPal button or a single Stripe button.
         [
-            'id' => 10,
+            'id' => 11,
+            'platform_name' => 'PayPal',
+            'method' => 'PayPal',
+            'standalone' => true,
+        ],
+        [
+            'id' => 12,
             'platform_name' => 'Stripe',
             'method' => 'Credit Card',
             'standalone' => true,

@@ -1,6 +1,6 @@
 <div class="bx">
     @php
-        $paymentPlatform = \Naykel\Payit\Models\PaymentPlatform::find(10);
+        $paymentPlatform = \Naykel\Payit\Models\PaymentPlatform::find(12);
     @endphp
     <form id="payment-form" action="{{ route('payment.initiate') }}" method="POST">
         @csrf

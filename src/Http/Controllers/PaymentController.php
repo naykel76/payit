@@ -17,19 +17,6 @@ class PaymentController extends Controller
         $this->paymentPlatformResolver = $paymentPlatformResolver;
     }
 
-    public function approval()
-    {
-        if (session()->has('payment.paymentPlatformId')) {
-            $paymentPlatform = $this->paymentPlatformResolver
-                ->resolveService(session()->get('payment.paymentPlatformId'));
-
-            return $paymentPlatform->handleApproval();
-        }
-
-        return redirect()->route('checkout')
-            ->withErrors('We cannot retrieve your payment platform. Try again, please.');
-    }
-
     public function cancelled()
     {
         session()->remove('payment');

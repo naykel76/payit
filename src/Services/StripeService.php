@@ -24,20 +24,20 @@ class StripeService extends BasePaymentService
         return "Bearer {$this->secret}";
     }
 
-    public function handlePayment($total, $request, $currency = 'AUD')
+    public function initiatePayment($total, $request, $currency = 'AUD')
     {
         $intent = $this->createIntent($total, $currency, $request->payment_method);
 
-        session()->put('payment.paymentIntentId', $intent->id);
+        session()->put('payment.approvalId', $intent->id); // "pi_3QSmI9EVrE67hRSs0HWnqIyp"
 
         return redirect()->route('payment.approval');
     }
 
     public function handleApproval()
     {
-        if (session()->has('payment.paymentIntentId')) {
+        if (session()->has('payment.approvalId')) {
 
-            $paymentIntentId = session()->get('payment.paymentIntentId');
+            $paymentIntentId = session()->get('payment.approvalId');
 
             $confirmation = $this->confirmPayment($paymentIntentId);
 

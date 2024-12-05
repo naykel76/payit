@@ -26,7 +26,10 @@ class InitiatePaymentController
         // e.g. StripeService or PayPalService
         $service = $this->paymentPlatformResolver->resolveService($request->platformId);
 
+        // store the selected platform ID in the session for later use.
+        session()->put('payment.ppid', $request->platformId);
+
         // Use the resolved service to handle the payment process.
-        return $service->handlePayment(session('cart.total'), $request);
+        return $service->initiatePayment(session('cart.total'), $request);
     }
 }
