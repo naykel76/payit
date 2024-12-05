@@ -1,2 +1,4 @@
 /vendor
+/tmp
 nk_tasks.md
+composer.lock

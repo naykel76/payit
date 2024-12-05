@@ -31,12 +31,7 @@
 @endpush
 
 <div id="card-element"></div>
-{{-- <div id="card-number"></div>
-<div id="card-expiry"></div>
-<div id="card-cvc"></div> --}}
-
 <small class="form-text text-muted" id="cardErrors" role="alert"></small>
-
 <input type="hidden" name="payment_method" id="paymentMethod">
 
 @push('scripts')

@@ -99,7 +99,7 @@ class StripeService
             '/v1/payment_intents',
             [],
             [
-                'amount' => dollarsToCents($value),
+                'amount' => $this->dollarsToCents($value),
                 'currency' => strtolower($currency),
                 'payment_method' => $paymentMethod,
                 'confirmation_method' => 'manual',

@@ -23,7 +23,6 @@ class PaymentController extends Controller
      */
     public function pay(Request $request)
     {
-
         // make sure payment type, and agree to conditions are set
         $request->validate([
             'payment_platform' => ['required', 'exists:payment_platforms,id'],
@@ -34,18 +33,11 @@ class PaymentController extends Controller
         $paymentPlatformId = $request->payment_platform;
 
         // resolve the payment gateway url and keys
-        $paymentPlatformCredentials = $this->paymentPlatformResolver
-            ->resolveService($paymentPlatformId);
+        $paymentPlatformCredentials = $this->paymentPlatformResolver->resolveService($paymentPlatformId);
 
         session()->put('payment.paymentPlatformId', $paymentPlatformId);
 
-        // NK::TD fix this work around for different cart totals
-        // not all platforms will require values from the $request but it is still required!
-        if (session('cart')->total) {
-            return $paymentPlatformCredentials->handlePayment(session('cart')->total, $request);
-        } else {
-            return $paymentPlatformCredentials->handlePayment(session('cart.total'), $request);
-        }
+        return $paymentPlatformCredentials->handlePayment(session('cart.total'), $request);
     }
 
     public function approval()
@@ -79,6 +71,4 @@ class PaymentController extends Controller
         return redirect()->route('user.dashboard')
             ->withSuccess('Your payment has been processed');
     }
-
-
 }

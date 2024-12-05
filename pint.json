@@ -1,0 +1,16 @@
+{
+    "rules": {
+        "class_attributes_separation": {
+            "elements": {
+                "const": "one",
+                "method": "one",
+                "property": "none",
+                "trait_import": "none"
+            }
+        },
+        "concat_space": {
+            "spacing": "one"
+        },
+        "control_structure_braces": false
+    }
+}
