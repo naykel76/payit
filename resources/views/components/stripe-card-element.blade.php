@@ -1,6 +1,28 @@
-<div id="card-element"></div>
-<small class="txt-red" id="card-errors" role="alert"></small>
-<input type="hidden" name="payment_method" id="paymentMethod">
+<div class="bx">
+    @php
+        $paymentPlatform = \Naykel\Payit\Models\PaymentPlatform::find(10);
+    @endphp
+    <form id="payment-form" action="{{ route('payment.initiate') }}" method="POST">
+        @csrf
+        {{-- this is only required to set the platformId --}}
+        <input name="platformId" id="{{ $paymentPlatform->id }}" value="{{ $paymentPlatform->id }}" type="hidden">
+
+        <div id="card-element"></div>
+        <small class="txt-red" id="card-errors" role="alert"></small>
+
+        {{-- what is this for? --}}
+        <input type="hidden" name="payment_method" id="paymentMethod">
+
+        <x-gt-checkbox for="agree" ignoreErrors>
+            I have read and agree to <a href="/terms-of-use" class="txt-underline" target="_blank">&nbsp;Terms & Conditions</a> &nbsp; and &nbsp;
+            <a href="/privacy-policy" class="txt-underline" target="_blank">Privacy Policy</a>.
+        </x-gt-checkbox>
+
+        <x-gt-errors />
+
+        <button type="submit" id="pay-button" class="btn primary w-full">Process Payment</button>
+    </form>
+</div>
 
 @push('scripts')
     <script src="https://js.stripe.com/v3/"></script>

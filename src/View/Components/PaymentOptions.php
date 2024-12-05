@@ -10,8 +10,10 @@ class PaymentOptions extends Component
 
     public function render()
     {
+        // filter out the standalone payment platforms used for single payment
+        // options. For example, a single PayPal button or a single Stripe button.
         return view('payit::components.payment-options')->with([
-            'paymentPlatforms' => PaymentPlatform::where('active', true)->get(),
+            'paymentPlatforms' => PaymentPlatform::where('standalone', false)->get(),
         ]);
     }
 }

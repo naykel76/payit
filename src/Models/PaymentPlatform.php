@@ -2,7 +2,6 @@
 
 namespace Naykel\Payit\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentPlatform extends Model
@@ -14,20 +13,23 @@ class PaymentPlatform extends Model
             'id' => 1,
             'platform_name' => 'PayPal',
             'method' => 'PayPal',
-            'active' => true,
+            'standalone' => false,
         ],
         [
             'id' => 2,
             'platform_name' => 'Stripe',
             'method' => 'Credit Card',
-            'active' => true,
+            'standalone' => false,
+        ],
+        // Standalone payment platforms makes it easier to create single payment
+        // options. For example, a single PayPal button or a single Stripe button.
+        [
+            'id' => 10,
+            'platform_name' => 'Stripe',
+            'method' => 'Credit Card',
+            'standalone' => true,
         ],
     ];
-
-    public function scopeActive(Builder $query): Builder
-    {
-        return $query->where('active', true);
-    }
 
     /**
      * Get the formatted provider name.
