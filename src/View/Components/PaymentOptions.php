@@ -7,7 +7,6 @@ use Naykel\Payit\Models\PaymentPlatform;
 
 class PaymentOptions extends Component
 {
-
     public function render()
     {
         // filter out the standalone payment platforms used for single payment

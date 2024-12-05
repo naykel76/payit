@@ -2,7 +2,6 @@
 
 namespace Naykel\Payit\Services;
 
-
 class PayPalService extends BasePaymentService
 {
     public function __construct()
@@ -39,6 +38,7 @@ class PayPalService extends BasePaymentService
         $approve = $orderLinks->where('rel', 'approve')->first();
         // add the paypal response approval id to session
         session()->put('payment.approvalId', $order->id);
+
         // open paypal login and pay
         return redirect($approve->href);
     }
@@ -76,8 +76,8 @@ class PayPalService extends BasePaymentService
                         'amount' => [
                             'currency_code' => strtoupper($currency),
                             'value' => $value,
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'application_context' => [
                     'brand_name' => config('app.name'),
@@ -85,7 +85,7 @@ class PayPalService extends BasePaymentService
                     'user_action' => 'PAY_NOW',
                     'return_url' => route('payment.approval'),
                     'cancel_url' => route('payment.cancelled'),
-                ]
+                ],
             ],
             [],
             $isJsonRequest = true,
@@ -100,7 +100,7 @@ class PayPalService extends BasePaymentService
             [],
             [],
             [
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ],
         );
     }

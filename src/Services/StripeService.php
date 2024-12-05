@@ -2,8 +2,6 @@
 
 namespace Naykel\Payit\Services;
 
-use Naykel\Payit\Traits\ConsumesExternalServices;
-
 class StripeService extends BasePaymentService
 {
     public function __construct()
@@ -25,7 +23,6 @@ class StripeService extends BasePaymentService
     {
         return "Bearer {$this->secret}";
     }
-
 
     public function handlePayment($total, $request, $currency = 'AUD')
     {
@@ -66,7 +63,7 @@ class StripeService extends BasePaymentService
             ->withErrors('We are unable to confirm your payment. Try again, please');
     }
 
-    function dollarsToCents(float $value) : int
+    public function dollarsToCents(float $value): int
     {
         return round($value * 100);
     }
@@ -107,5 +104,4 @@ class StripeService extends BasePaymentService
             ],
         );
     }
-
 }
