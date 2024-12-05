@@ -4,24 +4,11 @@ namespace Naykel\Payit\Services;
 
 use Naykel\Payit\Traits\ConsumesExternalServices;
 
-class StripeService
+class StripeService extends BasePaymentService
 {
-    use ConsumesExternalServices;
-
-    protected $baseUri;
-
-    protected $key;
-
-    protected $secret;
-
-    protected $plans;
-
     public function __construct()
     {
-        $this->baseUri = config('services.stripe.base_uri');
-        $this->key = config('services.stripe.key');
-        $this->secret = config('services.stripe.secret');
-        $this->plans = config('services.stripe.plans');
+        parent::__construct('stripe');
     }
 
     public function resolveAuthorization(&$queryParams, &$formParams, &$headers)
@@ -61,14 +48,6 @@ class StripeService
             $paymentIntentId = session()->get('payment.paymentIntentId');
 
             $confirmation = $this->confirmPayment($paymentIntentId);
-
-            // if ($confirmation->status === 'requires_action') {
-            //     $clientSecret = $confirmation->client_secret;
-
-            //     return view('stripe.3d-secure')->with([
-            //         'clientSecret' => $clientSecret,
-            //     ]);
-            // }
 
             if ($confirmation->status === 'succeeded') {
                 $name = $confirmation->charges->data[0]->billing_details->name;

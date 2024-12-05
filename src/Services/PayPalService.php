@@ -2,26 +2,12 @@
 
 namespace Naykel\Payit\Services;
 
-use Naykel\Payit\Traits\ConsumesExternalServices;
 
-class PayPalService
+class PayPalService extends BasePaymentService
 {
-    use ConsumesExternalServices;
-
-    protected $baseUri;
-
-    protected $clientId;
-
-    protected $clientSecret;
-
-    protected $plans;
-
     public function __construct()
     {
-        $this->baseUri = config('services.paypal.base_uri');
-        $this->clientId = config('services.paypal.client_id');
-        $this->clientSecret = config('services.paypal.client_secret');
-        $this->plans = config('services.paypal.plans');
+        parent::__construct('paypal');
     }
 
     public function resolveAuthorization(&$queryParams, &$formParams, &$headers)
@@ -36,7 +22,7 @@ class PayPalService
 
     public function resolveAccessToken()
     {
-        $credentials = base64_encode("{$this->clientId}:{$this->clientSecret}");
+        $credentials = base64_encode("{$this->key}:{$this->secret}");
 
         return "Basic {$credentials}";
     }

@@ -1,11 +1,11 @@
 # Changelog
 
-- Added: `PaymentService` abstract class and updated services to extend it
-- Added `payit.php` config file and updated services to use it
 - Removed migration, factory and seeder (use sushi instead)
 - Remove PaymentController and replaced with single action controllers
   
 ## 0.3.0
+- Added: `PaymentService` abstract class and updated services to extend it
+- Added `payit.php` config file and updated services to use it
 - Removed icons components (will be replaced with GT icons)
 
 

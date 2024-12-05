@@ -6,3 +6,4 @@
 
 # NAYKEL Payment Management Package
 
+- Add check to make sure .env is set

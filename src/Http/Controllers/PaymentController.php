@@ -4,7 +4,7 @@ namespace Naykel\Payit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Naykel\Payit\Resolvers\PaymentPlatformResolver;
+use Naykel\Payit\PaymentPlatformResolver;
 
 class PaymentController extends Controller
 {
