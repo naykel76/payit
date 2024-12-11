@@ -1,9 +1,9 @@
 # Changelog
 
-
-## 0.4.0 (wip)
+## 0.4.0 
 - Change `handlePayment` to `initiatePayment` to be more descriptive
 - Added standalone PayPal component
+- Updated controllers to single action controllers
 
 ## 0.3.0
 - Added `PaymentService` abstract class and updated services to extend it

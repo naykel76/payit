@@ -28,16 +28,16 @@ class StripeService extends BasePaymentService
     {
         $intent = $this->createIntent($total, $currency, $request->payment_method);
 
-        session()->put('payment.approvalId', $intent->id); // "pi_3QSmI9EVrE67hRSs0HWnqIyp"
+        session()->put('payment.intentId', $intent->id); // "pi_3QSmI9EVrE67hRSs0HWnqIyp"
 
         return redirect()->route('payment.approval');
     }
 
     public function handleApproval()
     {
-        if (session()->has('payment.approvalId')) {
+        if (session()->has('payment.intentId')) {
 
-            $paymentIntentId = session()->get('payment.approvalId');
+            $paymentIntentId = session()->get('payment.intentId');
 
             $confirmation = $this->confirmPayment($paymentIntentId);
 
@@ -49,8 +49,8 @@ class StripeService extends BasePaymentService
 
                 session()->put('payment.transactionId', $transactionId);
 
-                // payment confirmed route handles the order processing
-                return redirect()->route('payment.confirmed');
+                // payment success route handles the order processing
+                return redirect()->route('payment.success');
             }
         }
 

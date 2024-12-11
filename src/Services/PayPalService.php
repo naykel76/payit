@@ -57,8 +57,8 @@ class PayPalService extends BasePaymentService
 
             session()->put('payment.transactionId', $transactionId);
 
-            // payment confirmed route handles the order processing
-            return redirect()->route('payment.confirmed');
+            // payment success route handles the order processing
+            return redirect()->route('payment.success');
         }
 
         return redirect()->route('checkout')->withErrors('We cannot capture the payment. Try again, please');
