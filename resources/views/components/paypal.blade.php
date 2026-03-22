@@ -15,7 +15,7 @@
 
         <button type="submit" class="btn yellow w-full">
             <x-gt-icon name="paypal-favicon" type="payment" class="h-1.5 mr-05" />
-            <span class="txt-1 fw7">Checkout With {{ $paymentPlatform->method }}</span>
+            <span class="txt-1 font-bold">Checkout With {{ $paymentPlatform->method }}</span>
         </button>
     </form>
 </div>

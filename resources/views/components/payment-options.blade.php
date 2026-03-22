@@ -15,10 +15,10 @@
                                 {{ old('platformId') == $paymentPlatform->id ? 'checked' : '' }}>
                             @if ($paymentPlatform->method === 'PayPal')
                                 <x-gt-icon name="paypal-favicon" type="payment" class="h-1.5 mr-05" />
-                                <span class="txt-1 fw6"> {{ $paymentPlatform->method }}</span>
+                                <span class="txt-1 font-semibold"> {{ $paymentPlatform->method }}</span>
                             @elseif($paymentPlatform->method === 'Credit Card')
                                 <x-gt-icon name="credit-card" class="h-1.5 mr-05" />
-                                <span class="txt-1 fw6"> Credit/Debit Card</span>
+                                <span class="txt-1 font-semibold"> Credit/Debit Card</span>
                             @endif
                         </label>
                         <div x-show="expanded" x-collapse class="pxy">
