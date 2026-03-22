@@ -8,6 +8,7 @@ return [
      * ----------------------------------------------------------------------
      */
     'return_route' => 'user.account', // route to redirect to after payment
+    'checkout_route' => 'checkout', // route to redirect to when payment fails/cancels
 
     /**
      * ----------------------------------------------------------------------

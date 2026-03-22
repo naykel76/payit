@@ -20,7 +20,7 @@ class PaymentApprovalController
 
         // add error checking here to make sure checkout is available
         // NK::TD Refactor to allow for more flexibility and reusability
-        return redirect()->route('checkout')
+        return redirect()->route(config('payit.checkout_route'))
             ->withErrors('We cannot retrieve your payment platform. Try again, please.');
     }
 }

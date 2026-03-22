@@ -8,7 +8,7 @@ class PaymentCancelledController
     {
         session()->remove('payment');
 
-        return redirect()->route('checkout')
+        return redirect()->route(config('payit.checkout_route'))
             ->withErrors('You cancelled the payment.');
     }
 }
