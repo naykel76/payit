@@ -7,7 +7,7 @@ return [
      * Payment Gateway
      * ----------------------------------------------------------------------
      */
-    'return_route' => 'user.account', // route to redirect to after payment
+    'return_route' => 'checkout.complete', // route to redirect to after payment
     'checkout_route' => 'checkout', // route to redirect to when payment fails/cancels
 
     /**

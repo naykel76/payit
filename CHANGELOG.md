@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+
+- Updated return route handling for payment completion flows
+- Adjusted payment method validation to allow null values when appropriate
+
 ## 0.5.0
 
 - Added configurable `checkout_route` to `payit.php` for failed/cancelled payment redirects

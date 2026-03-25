@@ -17,7 +17,7 @@ class InitiatePaymentController
         $validated = $request->validate([
             'platformId' => ['required', 'integer', 'in:' . implode(',', $platformIds)],
             'agree' => ['accepted'],
-            'payment_method' => ['string', 'required_if:platformId,2,12'],
+            'payment_method' => ['nullable', 'string', 'required_if:platformId,2,12'],
         ]);
 
         // Resolve the payment service using the provided platform ID.
