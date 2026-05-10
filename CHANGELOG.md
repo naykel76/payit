@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1
+
+- Store selected payment platform provider name in the session during initiation
+
 ## 0.6.0
 
 - Updated return route handling for payment completion flows
